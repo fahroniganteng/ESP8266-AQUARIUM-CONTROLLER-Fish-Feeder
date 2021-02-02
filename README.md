@@ -14,7 +14,9 @@ Control aquarium with ESP8266 - Fish Feeder, Lamp, Pump
 [![DEMO](http://img.youtube.com/vi/GxMegb_iBR0/0.jpg)](https://youtu.be/GxMegb_iBR0)
 
 ## Instalation guide
-> video will be uploaded soon...
+[![DEMO](http://img.youtube.com/vi/HuCPMu3hP7A/0.jpg)](https://youtu.be/HuCPMu3hP7A)
+> video in indonesian language
+
 - Install arduino IDE from [arduino web](https://www.arduino.cc/)
 - Install driver CH340 [check here](https://learn.sparkfun.com/tutorials/how-to-install-ch340-drivers/all)
 - Upload sketch :
