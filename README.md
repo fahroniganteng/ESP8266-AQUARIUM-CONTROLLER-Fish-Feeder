@@ -48,11 +48,11 @@ Control aquarium with ESP8266 - Fish Feeder, Lamp, Pump
  - D8 : Relay
 
 ## Mechanical Feeder
-Mechanical feeder remixes from [here](https://www.thingiverse.com/thing:2921447)
+Mechanical feeder made with 3d printer, check on 3D folder for models.
 ![feeder1](3D/feeder.jpg)
 ![feeder2](3D/feeder01.jpg)
 ![feeder3](3D/feeder04.jpg)
-
+> Mechanical feeder remixes from [here](https://www.thingiverse.com/thing:2921447)
 ## Usage
 Default setting is offline mode (device becomes wifi access point) :
 - Connect to board with wifi 
