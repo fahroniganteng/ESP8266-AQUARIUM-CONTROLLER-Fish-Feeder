@@ -11,7 +11,7 @@ Control aquarium with ESP8266 - Fish Feeder, Lamp, Pump
 - RGB lamp control & schedule ON/OFF in online mode.
 
 ## Demo
-> video will be uploaded soon...
+[![DEMO](http://img.youtube.com/vi/GxMegb_iBR0/0.jpg)](https://youtu.be/GxMegb_iBR0)
 
 ## Instalation guide
 > video will be uploaded soon...
