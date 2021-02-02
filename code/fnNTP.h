@@ -3,13 +3,13 @@
  * ***************************************************************************************************
  */
 void ntpInit(){
-  Serial.print("Get NTP Offset : GMT ");
+  PRINT("Get NTP Offset : GMT ");
   timeZone = e_gmt.toFloat();
-  Serial.println(e_gmt);
+  PRINTLN(e_gmt);
   
-  Serial.print("Get NTP Server : \"");
-  Serial.print(e_ntp);
-  Serial.println("\"");
+  PRINT("Get NTP Server : \"");
+  PRINT(e_ntp);
+  PRINTLN("\"");
 
   timeClient.setPoolServerName(e_ntp.c_str());
   timeClient.setTimeOffset(timeZone*60*60); // convert hour to second
@@ -62,17 +62,6 @@ void getNtpDate(){
     arr_time[1]   = ntp_time.substring(3,5);
     arr_time[2]   = ntp_time.substring(6,8);
   }
-  
-//  snprintf(buf, sizeof(buf), "%02d", ptm->tm_min);
-//  Serial.printf("%s, %d %s %d %02d:%02d:%02d \r\n",
-//    namaHari[ptm->tm_wday],
-//    ptm->tm_mday,
-//    namaBulan[ptm->tm_mon],
-//    ptm->tm_year + 1900,
-//    ptm->tm_hour,
-//    ptm->tm_min,
-//    ptm->tm_sec
-//  );
 
   
 }
