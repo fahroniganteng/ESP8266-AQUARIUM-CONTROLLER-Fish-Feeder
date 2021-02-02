@@ -6,22 +6,22 @@ String listWifi;  // for available wifi list
 void scanWifi(){
   listWifi = "";
   int n = WiFi.scanNetworks();
-  PRINTLN("scan done");
+  Serial.println("scan done");
   if (n == 0){
-    PRINTLN("no networks found");
+    Serial.println("no networks found");
   }
   else {
-    PRINT(n);
-    PRINTLN(" networks found");
+    Serial.print(n);
+    Serial.println(" networks found");
     for (int i = 0; i < n; ++i){
       // Print SSID and RSSI for each network found
-      PRINT(i + 1);
-      PRINT(": ");
-      PRINT(WiFi.SSID(i));
-      PRINT(" (");
-      PRINT(WiFi.RSSI(i));
-      PRINT(")");
-      PRINTLN((WiFi.encryptionType(i) == ENC_TYPE_NONE)?" ":"*");
+      Serial.print(i + 1);
+      Serial.print(": ");
+      Serial.print(WiFi.SSID(i));
+      Serial.print(" (");
+      Serial.print(WiFi.RSSI(i));
+      Serial.print(")");
+      Serial.println((WiFi.encryptionType(i) == ENC_TYPE_NONE)?" ":"*");
       delay(10);
     }
     for (int i = 0; i < n; ++i){
@@ -42,7 +42,7 @@ void scanWifi(){
       listWifi += "</li>";
     }
   }
-  PRINTLN("");
+  Serial.println("");
   delay(100);
 }
 
@@ -52,15 +52,15 @@ void setupAP(void) {//access point MODE
   WiFi.hostname(wifiHostName);
   delay(10);
   //scanWifi();
-  PRINT("AP Config... ");
-  PRINTLN(WiFi.softAPConfig(local_IP, gateway, subnet) ? "Ready" : "Failed!");
+  Serial.print("AP Config... ");
+  Serial.println(WiFi.softAPConfig(local_IP, gateway, subnet) ? "Ready" : "Failed!");
   //WiFi.softAP(ssid, passphrase);
-  PRINT("AP Start... ");
+  Serial.print("AP Start... ");
   if(WiFi.softAP(ssid, passphrase)){
-    PRINTLN("Ready" );
+    Serial.println("Ready" );
   }
   else {
-    PRINTLN("Failed! Coba ulang...");
+    Serial.println("Failed! Coba ulang...");
     setupAP();
   }
 }
@@ -70,17 +70,17 @@ void connectWifi(){
   PRINT("ssid : ");
   PRINTLN(e_ssid);
   if(e_ssid=="__DEFAULT_WIFI__"){
-    PRINTLN("SSID belum diisi, mode access point..");
+    Serial.println("SSID blank, AP Mode");
     setupAP();
-    PRINT("SoftAP IP: ");
-    PRINTLN(WiFi.softAPIP());
+    Serial.print("SoftAP IP: ");
+    Serial.println(WiFi.softAPIP());
     tmr.oscillate(LED_BUILTIN, 50, HIGH, 5);
     delay(100);
     return;
   }
   PRINT("pass : ");
   PRINTLN(e_pass);
-//  PRINTLN("********");
+//  Serial.println("********");
 
   WiFi.mode(WIFI_STA); //wifi mode ==> WIFI_OFF, WIFI_STA, WIFI_AP, WIFI_AP_STA
   WiFi.hostname(wifiHostName);
@@ -88,24 +88,24 @@ void connectWifi(){
   WiFi.begin(e_ssid.c_str(), e_pass.c_str());
   while (WiFi.status() != WL_CONNECTED && connectLoop<=50) { //20*500ms = 10 second max connect time
     delay(200);
-    PRINT(".");
+    Serial.print(".");
     connectLoop++;
   }
   if(WiFi.status() != WL_CONNECTED){
     WiFi.disconnect();
-    PRINTLN("Cannot connect WiFi");
+    Serial.println("Cannot connect WiFi");
     setupAP();
-    PRINT("SoftAP IP: ");
-    PRINTLN(WiFi.softAPIP());
+    Serial.print("SoftAP IP: ");
+    Serial.println(WiFi.softAPIP());
     tmr.oscillate(LED_BUILTIN, 50, HIGH, 5);
     delay(100);
   }
   else{
-    PRINTLN();
-    PRINTLN("WiFi connected");
-    PRINTLN("IP address: ");
+    Serial.println();
+    Serial.println("WiFi connected");
+    Serial.println("IP address: ");
     String locIP = WiFi.localIP().toString();
-    PRINTLN(locIP);
+    Serial.println(locIP);
     tmr.oscillate(LED_BUILTIN, 50, HIGH, 3);
   }
 }
