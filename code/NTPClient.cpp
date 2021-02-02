@@ -159,7 +159,7 @@ void NTPClient::setPoolServerName(const char* poolServerName) {
 }
 
 void NTPClient::sendNTPPacket() {
-  Serial.println("Update NTP....");
+  //Serial.println("Update NTP....");
   // set all bytes in the buffer to 0
   memset(this->_packetBuffer, 0, NTP_PACKET_SIZE);
   // Initialize values needed to form NTP request
@@ -201,7 +201,7 @@ void NTPClient::sendNTPPacket() {
 //    IPAddress timeServerIP;
 //    WiFi.hostByName(this->_serverName.c_str(), timeServerIP);
 //    this->_udp->beginPacket(timeServerIP, 123); //NTP requests are to port 123
-    Serial.println(this->_serverName);
+    //Serial.println(this->_serverName);
     this->_udp->beginPacket(this->_serverName.c_str(), 123); //NTP requests are to port 123
   }
   else this->_udp->beginPacket(this->_poolServerName, 123); //NTP requests are to port 123
