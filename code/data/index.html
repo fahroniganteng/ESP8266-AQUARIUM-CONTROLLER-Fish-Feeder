@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>AQUARIUM</title>
+    <link href="bootstrap.min.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+  </head>
+
+  <body class="bg-light">
+	<div class="modal" id="preload" style="display:block;background:rgba(0,0,0,0.9)">
+		<div class="modal-dialog modal-dialog-centered justify-content-center">
+			<button type="button" class="btn btn-light m-progress p-0" disabled style="background:transparent !important;border: none !important">Light</button>
+			<h5 class="text-light m-0 p-0">Loading...</h5>
+		</div>
+	</div>
+	
+    <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
+      <a class="navbar-brand mr-auto mr-lg-0" href="#">AQUARIUM CONTROLLER</a>
+      <button class="navbar-toggler p-0 border-0" type="button" data-toggle="offcanvas">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active" data-container="homePage">
+            <a class="nav-link" href="javascript:void(0)">Home</a>
+          </li>
+		  <li class="nav-item" data-container="lampPage">
+            <a class="nav-link" href="javascript:void(0)">Lamp</a>
+          </li>
+		  <li class="nav-item" data-container="fishFeederPage">
+            <a class="nav-link" href="javascript:void(0)">Fish Feeder</a>
+          </li>
+          <li class="nav-item" data-container="ntpPage">
+            <a class="nav-link" href="javascript:void(0)">NTP</a>
+          </li>
+          <li class="nav-item" data-container="wifiPage">
+            <a class="nav-link" href="javascript:void(0)">Wifi</a>
+          </li>
+		  <li class="nav-item" data-container="aboutPage">
+            <a class="nav-link" href="javascript:void(0)">About</a>
+          </li>
+		</ul>
+      </div>
+    </nav>
+	<main role="main" class="container" style="display:block" id="homePage">
+		<div class="row my-2">
+			<div class="col-6 pr-1"><button class="btn btn-success btn-lg btn-block btn-pump" onclick="ronn.chButton(this,'PUMP')">PUMP</button></div>
+			<div class="col-6 pl-1"><button class="btn btn-outline-danger btn-lg btn-block btn-lamp" onclick="ronn.chButton(this,'LAMP')">LAMP</button></div>
+			<div class="col-12 mt-2"><button class="btn btn-outline-info btn-lg btn-block btn-feed" onclick="ronn.chButton(this,'FEED')">FEED NOW</button></div>
+		</div>
+		<div id="homeContent">
+		</div>
+    </main>
+	
+	<main role="main" class="container pb-2" style="display:none" id="lampPage">
+		<div class="card p-3 mt-2">
+			<legend class="w-auto my-0 text-info">Lamp Settings</legend>
+			<form onsubmit="return ronn.saveForm(this);" oninput="
+				lamp_brightnessOut.value = lamp_brightness.value;
+				lamp_speedOut.value = lamp_speed.value;
+				">
+				<div class="form-group mt-2 mb-0">
+					<label>Mode</label>
+						<select id="lamp_mode" class="form-control" required>
+							<option value="1">Default</option>
+							<option value="2">Manual</option>
+							<option value="3">Manual (fade)</option>
+							<option value="4">Manual (blink)</option>
+							<option value="5">Color 1 fade</option>
+							<option value="6">Color 2 fade</option>
+							<option value="7">Color 3 fade</option>
+							<option value="8">Color 1 blink</option>
+							<option value="9">Color 2 blink</option>
+							<option value="10">Color 3 blink</option>
+						</select>
+				</div>
+				<div class="form-group mt-2 mb-0">
+					<label for="lamp_brightness">Brightness <small class="text-primary"> level <output id="lamp_brightnessOut" >1</output></small></label>
+					<input type="range" class="custom-range" min="1" max="10" step="1" id="lamp_brightness" value="1">
+				</div>
+				<div class="form-group mt-2 mb-0">
+					<label for="lamp_speed">Speed <small class="text-primary"><output id="lamp_speedOut">1</output> second</small></label>
+					<input type="range" class="custom-range" min="1" max="60" step="1" id="lamp_speed" value="1">
+				</div>
+				<div class="form-group mt-2 mb-5">
+					<label for="lamp_color">Color</label>
+					<input type="color" class="form-control" id="lamp_color">
+				</div>
+				<button type="submit" class="btn btn-info float-right px-5 mt-2">SAVE</button>
+			</form>
+		</div>
+		<div class="card p-3 mt-2">
+			<legend  class="w-auto my-0 text-info">Lamp Schedule</legend>
+			<form onsubmit="return ronn.saveForm(this);">
+				<div class="form-group">
+					<label for="lamp_on">Schedule ON</label>
+					<input type="time" class="form-control" id="lamp_on">
+				</div>
+				<div class="form-group">
+					<label for="lamp_off">Schedule OFF</label>
+					<input type="time" class="form-control" id="lamp_off">
+				</div>
+				<div class="form-group mb-5">
+					<small style="color:#999">
+					If schedule ON same as OFF, lamp is always ON.<br>
+					Leave it blank if there is no schedule.
+					</small>
+				</div>
+				<button type="submit" class="btn btn-info float-right px-5">SAVE</button>
+			</form>
+		</div>
+    </main>
+	
+	<main role="main" class="container pb-2" style="display:none" id="fishFeederPage">
+		<div class="card p-3 mt-2">
+			<legend  class="w-auto my-0 text-info">Feeder Settings</legend>
+			<form onsubmit="return ronn.saveForm(this);" oninput="
+				feed_levelOut.value = feed_level.value;
+				feed_loopOut.value = feed_loop.value;
+				">
+				<div class="form-group mt-2 mb-0">
+					<label for="feed_level">How much <small class="text-primary">level <output id="feed_levelOut">1</output></small></label>
+					<input type="range" class="custom-range" min="1" max="10" step="1" id="feed_level" value="1">
+				</div>
+				<div class="form-group mt-2 mb-0">
+					<label for="feed_loop">How many times <small class="text-primary"><output id="feed_loopOut" >1</output>x</small></label>
+					<input type="range" class="custom-range" min="1" max="10" step="1" id="feed_loop" value="1">
+				</div>
+				<button type="submit" class="btn btn-info float-right px-5 mt-2">SAVE</button>
+			</form>
+		</div>
+		<div class="card p-3 mt-2">
+			<legend  class="w-auto my-0 text-info">Online Feed Schedule</legend>
+			<form onsubmit="return ronn.saveForm(this);">
+				<div class="form-group">
+					<label for="feed1">Schedule 1</label>
+					<input type="time" class="form-control" id="feed1" required>
+				</div>
+				<div class="form-group">
+					<label for="feed2">Schedule 2</label>
+					<input type="time" class="form-control" id="feed2">
+				</div>
+				<div class="form-group">
+					<label for="feed3">Schedule 3</label>
+					<input type="time" class="form-control" id="feed3">
+				</div>
+				<div class="form-group">
+					<label for="feed4">Schedule 4</label>
+					<input type="time" class="form-control" id="feed4">
+				</div>
+				<div class="form-group">
+					<label for="feed5">Schedule 5</label>
+					<input type="time" class="form-control" id="feed5">
+				</div>
+				<div class="form-group mb-5">
+					<small style="color:#999">
+					Minimum 1 schedule and maximum 5 schedules.<br>
+					Leave it blank if there is no schedule.
+					</small>
+				</div>
+				<button type="submit" class="btn btn-info float-right px-5">SAVE</button>
+			</form>
+		</div>
+		<div class="card p-3 mt-2">
+			<legend  class="w-auto my-0 text-info">Offline setting</legend>
+			<form onsubmit="return ronn.saveForm(this);" oninput="
+				feed_durationOut.value = feed_duration.value;
+				">
+				<div class="form-group mt-2 mb-0">
+					<label for="feed_duration">Feed every <small class="text-primary"> <output id="feed_durationOut" >1</output> hour</small></label>
+					<input type="range" class="custom-range" min="1" max="24" step="1" id="feed_duration" value="1">
+				</div>
+				<div class="form-group mb-5">
+					<small style="color:#999">
+					If the device is offline, will use this setting
+					</small>
+				</div>
+				<button type="submit" class="btn btn-info float-right px-5 mt-2">SAVE</button>
+			</form>
+		</div>
+    </main>
+	
+	<main role="main" class="container pb-2" style="display:none" id="ntpPage">
+		<div class="card p-3 mt-2">
+			<legend  class="w-auto my-0 text-info">NTP Setting</legend>
+			<form onsubmit="return ronn.saveForm(this);">
+				<div class="form-group my-2"><!--3910-->
+					<label>Time</label>
+					<div type="test" class="form-control" id="showTime" style="background-color: #e9ecef;"></div>
+				</div>
+				<div class="form-group my-2">
+					<label>NTP Server <small style="color:#999">default pool.ntp.org</small></label>
+					<input type="test" id="ntpServer" class="form-control" required>
+				</div>
+				<div class="form-group mt-2 mb-5">
+					<label>Time zone</label>
+					<select id="timeZone" class="form-control" required>
+						<option value="12">GMT +12</option>
+						<option value="11">GMT +11</option>
+						<option value="10">GMT +10</option>
+						<option value="9.5">GMT +9:30</option>
+						<option value="9">GMT +9</option>
+						<option value="8">GMT +8</option>
+						<option value="7">GMT +7</option>
+						<option value="6">GMT +6</option>
+						<option value="5.5">GMT +5:30</option>
+						<option value="5">GMT +5</option>
+						<option value="4">GMT +4</option>
+						<option value="3.5">GMT +3:30</option>
+						<option value="3">GMT +3</option>
+						<option value="2">GMT +2</option>
+						<option value="1">GMT +1</option>
+						<option value="0">GMT +0</option>
+						<option value="-1">GMT -1</option>
+						<option value="-2">GMT -2</option>
+						<option value="-3">GMT -3</option>
+						<option value="-3.5">GMT -3:30</option>
+						<option value="-4">GMT -4</option>
+						<option value="-5">GMT -5</option>
+						<option value="-6">GMT -6</option>
+						<option value="-7">GMT -7</option>
+						<option value="-8">GMT -8</option>
+						<option value="-9">GMT -9</option>
+						<option value="-10">GMT -10</option>
+						<option value="-11">GMT -11</option>
+						<option value="-12">GMT -12</option>
+					</select>
+				</div>
+				<button type="button" class="btn btn-outline-warning px-5 mt-2" onclick="ronn.forceUpdateNtp(this);">UPDATE NTP</button>
+				<button type="submit" class="btn btn-info float-right px-5 mt-2">SAVE</button>
+			</form>
+		</div>
+    </main>
+	
+	<main role="main" class="container pb-2" style="display:none" id="wifiPage">
+		<div class="card py-3 mt-2">
+			<legend  class="w-auto my-0 text-info px-3 border-bottom">Available Wifi</legend>
+			<ul id="wifiAvailable" class="list-group list-group-flush"></ul>
+			<small style="color:#999" class="px-3 float-right">
+				*click/tap the list to select wifi
+			</small>
+		</div>
+		<div class="card p-3 mt-2">
+			<legend  class="w-auto my-0 text-info">Connection</legend>
+			<form onsubmit="return ronn.saveForm(this);">
+				<div class="form-group my-2">
+					<label>Current Connection</label>
+					<input type="text" id="currentConnection" class="form-control" disabled>
+				</div>
+				<div class="form-group my-2">
+					<label>SSID</label>
+					<input type="text" id="ssid" class="form-control" required>
+				</div>
+				<div class="form-group my-2 mb-5">
+					<label>Password</label>
+					<input type="input" id="pass" class="form-control ">
+				</div>
+				<button type="submit" class="btn btn-info float-right px-3 ml-1">SAVE & CONNECT</button>
+				<button type="button" class="btn btn-outline-warning float-left px-3" onclick="ronn.reConnect(this);">RE-CONNECT</button>
+			</form>
+		</div>
+		
+		<div class="card p-3 mt-2">
+			<legend  class="w-auto my-0 text-info">Default device settings</legend>
+			<div class="row my-2">
+				<b class="col-sm-4">Device mode</b>
+				<div class="col-sm-8">Access Point</div>
+			</div>
+			<div class="row my-2">
+				<b class="col-sm-4">SSID</b>
+				<div class="col-sm-8" id="apName">-</div>
+			</div>
+			<div class="row my-2">
+				<b class="col-sm-4">Wifi Password</b>
+				<div class="col-sm-8" id="apPass">-</div>
+			</div>
+			<div class="row my-2">
+				<b class="col-sm-4">Web server address</b>
+				<div class="col-sm-8">http://10.10.10.10/</div>
+			</div>
+			<div class="form-group mb-5">
+				<small style="color:#999">
+				If the device fails to connect to wifi, it will become an access point.<br>
+				Reset wifi will clear the connection settings (make the device an access point).
+				</small>
+			</div>
+			<button type="button" class="btn btn-outline-danger float-right px-3" onclick="ronn.resetWifiSetting(this);">RESET WIFI</button>
+		</div>
+    </main>
+	
+	<main role="main" class="container pb-2" style="display:none" id="aboutPage">
+		<div class="card mt-2 text-white bg-dark">
+			<div class="card-header">About</div>
+			<div class="card-body">
+				<h5 class="text-warning mb-4"><center>AQUARIUM CONTROLLER</center></h5>
+				<div class="row my-2">
+					<b class="col-sm-4">Version</b>
+					<div class="col-sm-8">1.0.0 - Jan 2021</div>
+				</div>
+				<div class="row my-2">
+					<b class="col-sm-4">Contact me</b>
+					<div class="col-sm-8"><a href="mailto:fahroniganteng@gmail.com">fahroni|ganteng</a></div>
+				</div>
+				<div class="row my-2">
+					<b class="col-sm-4">Hardware Required</b>
+					<div class="col-sm-8">ESP8266, servo motor, LED Strip, Relay</div>
+				</div>
+				<div class="row my-2">
+					<b class="col-sm-4">Application reference</b>
+					<div class="col-sm-8">Arduino IDE, Jquery, Bootstrap 4, C++, html, javascript</div>
+				</div>
+				<div class="row my-2">
+					<b class="col-sm-4">License</b>
+					<div class="col-sm-8">MIT</div>
+				</div>
+			</div>
+		</div>
+    </main>
+	
+	
+	
+	
+	<div class="modal" id="loading" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered justify-content-center" role="document" >
+			<button type="button" class="btn btn-light m-progress p-0" disabled style="background:transparent !important;border: none !important">Light</button>
+			<h5 class="text-light m-0 p-0">Loading...</h5>
+		</div>
+	</div>
+	
+    <script src="jquery.js"></script>
+    <script src="bootstrap.min.js"></script>
+    <script src="swipe.js"></script>
+    <script src="function.js"></script>
+  </body>
+</html>
