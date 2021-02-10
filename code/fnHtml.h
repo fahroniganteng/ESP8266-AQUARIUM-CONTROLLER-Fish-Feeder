@@ -42,10 +42,6 @@ bool loadFromSpiffs(String path) {
  * *****************************************************************************************************
    this function for handle HTML request (from web browser)
 */
-int shSuhu = 10;  // pas start diganti dari eeprom
-int shTgl = 30;   // pas start diganti dari eeprom
-int shKustomText = 0;
-String kustomText = "";
 
 // fn make json
 String jsonData = "";
